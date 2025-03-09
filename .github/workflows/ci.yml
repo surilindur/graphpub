@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  - push
+  - pull_request
+
+env:
+  DEFAULT_PYTHON_VERSION: 3.13
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Linting
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Use Python ${{ env.DEFAULT_PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
+      - name: Install project dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Install pylint
+        run: python -m pip install pylint
+      - name: Run linter
+        run: |
+          python -m pylint \
+            --output-format colorized \
+            --max-line-length 88 \
+            --disable R0913,R0917,R0903,W0718 \
+            ./graphpub
+  test:
+    name: Test
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        python_version:
+          - 3.13
+        operating_system:
+          - ubuntu-24.04
+          - ubuntu-24.04-arm
+    runs-on: ${{ matrix.operating_system }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Use Python ${{ env.DEFAULT_PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
+      - name: Prepare SPARQL endpoint
+        run: docker compose --file .github/jena/compose.yml create
+      - name: Start SPARQL endpoint
+        run: docker compose --file .github/jena/compose.yml start
+      - name: Install project dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Publish local files to the SPARQL endpoint with auth
+        run: |
+          python graphpub/app.py \
+            --query-endpoint http://localhost:3030/test/sparql \
+            --update-endpoint http://localhost:3030/test/update \
+            --base http://localhost:8080/ \
+            --graph http://localhost:8080/graph \
+            --source .github/data \
+            --purge
+        env:
+          SPARQL_USERNAME: test
+          SPARQL_PASSWORD: test123
+      - name: Query the SPARQL endpoint for published data
+        run: |
+          curl \
+            --header 'content-type: application/sparql-query' \
+            --header 'accept: application/sparql-results+json' \
+            --data 'SELECT * { GRAPH ?g { ?s ?p ?o } }' \
+            http://localhost:3030/test/sparql
+      - name: Stop SPARQL endpoint
+        run: docker compose --file .github/jena/compose.yml stop
+        if: always()
+      - name: Clean Docker images and networks
+        run: docker system prune --all --force
+        if: always()
+  docker:
+    name: Docker build
+    needs: test
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - run: docker build --tag graphpub:dev .
+      - run: docker run --rm graphpub:dev --help

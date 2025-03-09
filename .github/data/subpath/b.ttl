@@ -1,0 +1,4 @@
+@prefix ex: <ex:> .
+
+ex:b ex:p1 ex:o;
+    ex:p2 "b" .
