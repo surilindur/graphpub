@@ -6,6 +6,7 @@
     <a href="https://github.com/surilindur/graphport/actions/workflows/ci.yml"><img alt="CI" src=https://github.com/surilindur/graphport/actions/workflows/ci.yml/badge.svg?branch=main"></a>
     <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/%3C%2F%3E-Python-%233776ab.svg"></a>
     <a href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-%23750014.svg"></a>
+    <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/Code%20Style-black-000000.svg"></a>
 </p>
 
 Experimental simple prototype tool to publish [RDF](https://www.w3.org/RDF/) graphs
