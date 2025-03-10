@@ -84,11 +84,13 @@ jobs:
         run: docker system prune --all --force
         if: always()
   docker:
-    name: Docker build
+    name: Docker
     needs: test
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - run: docker build --tag graphpub:dev .
-      - run: docker run --rm graphpub:dev --help
+      - name: Build Docker image
+        run: docker build --tag graphpub:dev .
+      - name: Test Docker image
+        run: docker run --rm graphpub:dev --help
