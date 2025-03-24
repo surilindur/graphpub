@@ -8,3 +8,5 @@ WORKDIR /opt/graphpub
 RUN python -m pip install -r requirements.txt
 
 ENTRYPOINT [ "python", "app.py" ]
+
+CMD [ "--help" ]
