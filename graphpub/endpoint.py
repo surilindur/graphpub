@@ -26,7 +26,7 @@ def get_auth() -> Tuple[str, str] | None:
 def get_graph(
     query_endpoint: URIRef,
     update_endpoint: URIRef | None,
-    identifier: URIRef,
+    graph_identifier: URIRef,
     purge: bool,
 ) -> Graph:
     """
@@ -43,6 +43,6 @@ def get_graph(
     )
     dataset = Dataset(store=store)
     if purge:
-        warning(f"Removing graph {identifier}")
-        dataset.remove_graph(g=identifier)
-    return dataset.add_graph(g=identifier)
+        warning(f"Removing graph {graph_identifier}")
+        dataset.remove_graph(g=graph_identifier)
+    return dataset.add_graph(g=graph_identifier)

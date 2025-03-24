@@ -50,7 +50,7 @@ python graphpub/app.py \
     --query-endpoint http://localhost:3030/test/sparql \
     --update-endpoint http://localhost:3030/test/update \
     --target-base http://localhost:8080/ \
-    --target-graph http://localhost:8080/test/ \
+    --target-graph http://localhost:3030/test \
     --source-path ./data \
     --purge
 ```

@@ -52,19 +52,19 @@ jobs:
         with:
           python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
           cache: pip
-      - name: Install project dependencies
-        run: python -m pip install -r requirements.txt
       - name: Prepare SPARQL endpoint
         run: docker compose --file .github/jena/compose.yml create
       - name: Start SPARQL endpoint
         run: docker compose --file .github/jena/compose.yml start
+      - name: Install project dependencies
+        run: python -m pip install -r requirements.txt
       - name: Publish local files to the SPARQL endpoint with auth
         run: |
           python graphpub/app.py \
             --query-endpoint http://localhost:3030/test/sparql \
             --update-endpoint http://localhost:3030/test/update \
             --target-base http://localhost:8080/ \
-            --target-graph http://localhost:8080/graph \
+            --target-graph http://localhost:3030/test \
             --source-path .github/data \
             --purge
         env:

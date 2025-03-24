@@ -36,7 +36,7 @@ def publish_graph(
     graph = get_graph(
         query_endpoint=query_endpoint,
         update_endpoint=update_endpoint,
-        identifier=target_graph,
+        graph_identifier=target_graph,
         purge=purge,
     )
 
