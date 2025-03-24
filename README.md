@@ -29,9 +29,8 @@ Authentication using a username and password is supported via environment variab
 
 ## Compatibility
 
-The queries are sent using `POST` with a reasonably formed `User-Agent` header,
-and should thus work with reverse proxies that do agent validation
-or block the use of query strings.
+The queries are sent using `POST` with a `User-Agent` header following the [common conventions](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/User-Agent),
+and should thus work with reverse proxies that do agent validation or block the use of query strings.
 
 The tool has been tested against the following SPARQL endpoints:
 
@@ -50,9 +49,9 @@ and also purging the previous graph if it exists:
 python graphpub/app.py \
     --query-endpoint http://localhost:3030/test/sparql \
     --update-endpoint http://localhost:3030/test/update \
-    --base http://localhost:8080/ \
-    --graph http://localhost:8080/ \
-    --source ./data \
+    --target-base http://localhost:8080/ \
+    --target-graph http://localhost:8080/test/ \
+    --source-path ./data \
     --purge
 ```
 

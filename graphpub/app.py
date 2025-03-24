@@ -32,9 +32,9 @@ class CommandLineArgs(Namespace):
     query_endpoint: URIRef
     update_endpoint: URIRef | None
     log_level: str
-    base: URIRef
-    graph: URIRef
-    source: Path
+    target_base: URIRef
+    target_graph: URIRef
+    source_path: Path
     purge: bool
 
 
@@ -65,17 +65,17 @@ def parse_args() -> CommandLineArgs:
         required=False,
     )
     parser.add_argument(
-        "--base",
+        "--target-base",
         type=URIRef,
         help="The base URI, mapped to source path, for completing all relative URIs",
     )
     parser.add_argument(
-        "--graph",
+        "--target-graph",
         type=URIRef,
         help="The URI of the graph to publish in",
     )
     parser.add_argument(
-        "--source",
+        "--source-path",
         type=lambda p: Path(p).resolve(),
         help="The path to the input data on local filesystem",
     )
@@ -100,9 +100,9 @@ def main() -> None:
     publish_graph(
         query_endpoint=args.query_endpoint,
         update_endpoint=args.update_endpoint,
-        identifier=args.graph,
-        base=args.base,
-        source=args.source,
+        target_graph=args.target_graph,
+        target_base=args.target_base,
+        source_path=args.source_path,
         purge=args.purge,
     )
 
