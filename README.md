@@ -11,13 +11,14 @@
 
 Experimental simple prototype tool to publish [RDF](https://www.w3.org/RDF/) graphs
 from local documents to a [SPARQL endpoint](https://www.w3.org/TR/sparql11-protocol/)
-using [RDFLib](https://github.com/RDFLib/rdflib).
+using [RDFLib](https://github.com/RDFLib/rdflib) and SPARQL update queries.
 The tool exists to faciliate the following use-cases:
 
 * Storing RDF graphs as documents on local filesystem. This makes it easier to do version control over them.
 * Using relative URIs inside documents. When published, these URIs are mapped to a full URI under the specified base URI, following their relative path under the published root directory.
 
 The tool does no mapping beyond filling in the relative URIs, and all input data is expected to be in RDF already.
+The tool has been designed for smaller datasets, and other bulk loading mechanisms should be preferred for larger ones when available.
 Export functionality is beyond the scope of the tool.
 Authentication using a username and password is supported via environment variables.
 
