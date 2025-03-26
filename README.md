@@ -41,8 +41,8 @@ The tool has been tested against the following SPARQL endpoints:
 Authentication via username and password is facilitated through the environment variables `SPARQL_USERNAME` and `SPARQL_PASSWORD`,
 which are used in the auth tuples of RDFLib's SPARQL store.
 
-To publish a local directory from `./data` to the graph `http://localhost:8080/`,
-by mapping all relative resource URIs under the graph URI,
+To publish a local directory from `./data` to the graph `http://localhost:3030/test`,
+by mapping all relative resource URIs under `http://localhost:8080/`,
 and also purging the previous graph if it exists:
 
 ```bash
